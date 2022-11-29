@@ -1,0 +1,54 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'ray_tracing_in_rust'",
+            "sourceMap": {
+                "${workspaceFolder}/src": "${workspaceFolder}/target/debug"
+            },
+            "initCommands": [
+                "settings set target.disable-aslr false"
+            ],
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=ray_tracing_in_rust",
+                    "--package=ray_tracing_in_rust"
+                ],
+                "filter": {
+                    "name": "ray_tracing_in_rust",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'RayTracingInRust'",
+            "initCommands": [
+                "settings set target.disable-aslr false"
+            ],
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=ray_tracing_in_rust",
+                    "--package=ray_tracing_in_rust"
+                ],
+                "filter": {
+                    "name": "ray_tracing_in_rust",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
