@@ -16,19 +16,29 @@ fn main() -> io::Result<()> {
 
     for j in (0..(image_height)).rev() {
         for i in 0..(image_width) {
-            let r: f64 = i as f64 / (image_width-1) as f64;
-            let g: f64 = j as f64 / (image_height-1) as f64;
-            let b: f64 = 0.25;
-
-            let ir = (255.999 as f64 * r) as i32;
-            let ig = (255.999 as f64 * g) as i32;
-            let ib = (255.999 as f64 * b) as i32;
-
-            data = ir.to_string() + &" " + &ig.to_string() + &" " + &ib.to_string() + &"\n";
-            handle.write(data.as_bytes())?;
+            let color = PixelColor { 
+                r: ((i as f64 / (image_width-1) as f64) * 255.999 as f64) as i32, 
+                g: ((j as f64 / (image_height-1) as f64) * 255.999 as f64) as i32, 
+                b: ((0.25 as f64) * 255.999 as f64) as i32,
+            };
+            write_color(&stdout, color)?;
         }
     }
 
     handle.flush()?;
+    Ok(())
+}
+
+struct PixelColor {
+   r: i32,
+   g: i32,
+   b: i32,
+}
+
+fn write_color(stdout: &std::io::Stdout, color: PixelColor) -> Result<(), std::io::Error>  {
+    // Write the translated [0,255] value of each color component.
+    let mut handle = stdout.lock();
+    let data = (color.r.to_string()) + &" " + &(color.g.to_string()) + &" " + &(color.b.to_string()) + &"\n";
+    handle.write(data.as_bytes())?;
     Ok(())
 }
