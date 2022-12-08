@@ -66,7 +66,21 @@ fn write_color(stdout: &std::io::Stdout, color: PixelColor) -> Result<(), std::i
 }
 
 fn ray_color(ray: &Ray) -> PixelColor {
-    let unit_direction = ray.direction().normalize();
-    let t = 0.5 * (unit_direction[1] + 1.0);
-    PixelColor::new( (1.0 - t) * Vector3::new(1.0, 1.0, 1.0) + t * Vector3::new(0.5, 0.7, 1.0) )
+    if hit_sphere(Vector3::new(0.0,0.0,-1.0), 0.5, ray) {
+        PixelColor::new(Vector3::new(1.0, 0.0, 0.0))
+    }
+    else {
+        let unit_direction = ray.direction().normalize();
+        let t = 0.5 * (unit_direction[1] + 1.0);
+        PixelColor::new( (1.0 - t) * Vector3::new(1.0, 1.0, 1.0) + t * Vector3::new(0.5, 0.7, 1.0) )
+    }
+}
+
+fn hit_sphere(center: Vector3<f64>, radius: f64, ray: &Ray) -> bool {
+    let oc = ray.origin() - center;
+    let a = ray.direction().dot(&ray.direction());
+    let b = 2.0 * oc.dot(&ray.direction());
+    let c = oc.dot(&oc) - radius*radius;
+    let discriminant = b*b - 4.0*a*c;
+    discriminant > 0.0
 }
